@@ -1,0 +1,82 @@
+/* Full-screen loading overlay */
+.loader-image.infinite-scroll-request.text-center {
+	position: fixed !important;
+	inset: 0 !important;
+	width: 100% !important;
+	height: 100% !important;
+	display: flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	background: rgba(0, 0, 0, 0.35) !important;
+	z-index: 999999 !important;
+}
+
+/* White loader box containing the logo and spinner */
+.dcis-loader-box {
+	display: flex !important;
+	flex-direction: column !important;
+	align-items: center !important;
+	justify-content: center !important;
+	padding: 25px 35px !important;
+	background: #fff !important;
+	border-radius: 8px !important;
+	box-sizing: border-box !important;
+}
+
+/* DcaShop logo inside the loader box */
+.dcis-loader-box .archive-img-loader {
+	display: block !important;
+	width: auto !important;
+	height: auto !important;
+	max-width: none !important;
+	margin: 0 !important;
+	padding: 0 !important;
+	background: transparent !important;
+	border-radius: 0 !important;
+}
+
+/* Animated loading spinner */
+.dcis-loader-spinner {
+	width: 38px !important;
+	height: 38px !important;
+	margin-top: 22px !important;
+	border: 4px solid #e5e5e5 !important;
+	border-top-color: #333 !important;
+	border-radius: 50% !important;
+	box-sizing: border-box !important;
+	animation: dcisLoaderSpin 0.8s linear infinite !important;
+}
+
+/* Spinner rotation animation */
+@keyframes dcisLoaderSpin {
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+/* Mobile loader adjustments */
+@media (max-width: 600px) {
+
+	/* Reduce the loader box size on mobile */
+	.dcis-loader-box {
+		padding: 18px 22px !important;
+		border-radius: 7px !important;
+	}
+
+	/* Reduce the logo size on mobile */
+	.dcis-loader-box .archive-img-loader {
+		max-width: 140px !important;
+		height: auto !important;
+	}
+
+	/* Reduce the spinner size and spacing on mobile */
+	.dcis-loader-spinner {
+		width: 30px !important;
+		height: 30px !important;
+		margin-top: 15px !important;
+		border-width: 3px !important;
+	}
+}
