@@ -1,4 +1,3 @@
-```php
 <?php
 /**
  * Plugin Name: DcaShop Infinite Scroll
@@ -28,6 +27,17 @@ add_filter( 'flatsome_infinite_scroll_params', function ( $params ) {
 } );
 
 /**
+ * Limit WooCommerce pagination links.
+ */
+add_filter( 'woocommerce_pagination_args', function ( $args ) {
+
+	$args['end_size'] = 1;
+	$args['mid_size'] = 1;
+
+	return $args;
+} );
+
+/**
  * Enqueue plugin assets.
  * Only on WooCommerce product category archives.
  */
@@ -51,4 +61,15 @@ function dcis_enqueue_assets() {
 		DCIS_URL . 'assets/js/infinite-scroll.js',
 		array( 'jquery' ),
 		DCIS_VERSION,
-```
+		true
+	);
+
+	wp_localize_script(
+		'dcis-infinite-scroll',
+		'DCIS',
+		array(
+			'maxPage'    => 5,
+			'storageKey' => 'dcashop_infinite_scroll_finished',
+		)
+	);
+}
