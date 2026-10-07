@@ -318,16 +318,17 @@ jQuery(function($) {
 
 						/* Fix product grid reflow */
 
-						requestAnimationFrame(
-							function() {
+						requestAnimationFrame(function () {
 
-								$(window).trigger(
-									'resize'
-								);
+	                     $(window).trigger('resize');
 
-							}
-						);
+	                    requestAnimationFrame(function () {
 
+		                $(window).trigger('resize');
+
+                    	});
+
+                        });
 
 						var instance =
 							$products.data(
