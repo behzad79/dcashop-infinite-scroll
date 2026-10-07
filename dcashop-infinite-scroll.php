@@ -3,7 +3,7 @@
  * Plugin Name: DcaShop Infinite Scroll
  * Plugin URI: https://github.com/behzad79/dcashop-infinite-scroll
  * Description: Limits and manages Infinite Scroll for WooCommerce products on product category archives.
- * Version: 1.0.0
+ * Version: 1.1.0
  * Author: Seyyed Behzad Mousaviyan
  * Author URI: https://github.com/behzad79
  * GitHub Plugin URI: https://github.com/behzad79/dcashop-infinite-scroll
