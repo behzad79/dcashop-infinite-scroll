@@ -46,7 +46,23 @@
 	box-sizing: border-box !important;
 	animation: dcisLoaderSpin 0.8s linear infinite !important;
 }
-
+/* Bottom loading spinner */
+.dcis-bottom-spinner {
+	display: none;
+	width: 100%;
+	text-align: center;
+	padding: 25px 0 30px;
+}
+/* Animated bottom spinner */
+.dcis-bottom-spinner-circle {
+	width: 28px;
+	height: 28px;
+	margin: 0 auto;
+	border: 3px solid rgba(0, 0, 0, .12);
+	border-top-color: #333;
+	border-radius: 50%;
+	animation: dcis-bottom-spin .7s linear infinite;
+}
 /* Spinner rotation animation */
 @keyframes dcisLoaderSpin {
 	from {
