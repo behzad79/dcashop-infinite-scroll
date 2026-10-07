@@ -14,33 +14,39 @@ jQuery(function($) {
 			dcashopStorageKey
 		) === '1';
 
+
+	/* Loader */
+
 	function dcashopShowLoader() {
 
-	var $loader =
-		$('.loader-image.infinite-scroll-request');
+		var $loader =
+			$('.loader-image.infinite-scroll-request');
 
-	if (!$loader.length) {
-		return;
-	}
+		if (!$loader.length) {
+			return;
+		}
 
-	if (!$loader.find('.dcis-loader-box').length) {
+		if (!$loader.find('.dcis-loader-box').length) {
 
-		var $logo =
-			$loader.find('.archive-img-loader').first();
+			var $logo =
+				$loader.find('.archive-img-loader').first();
 
-		$logo.wrap('<div class="dcis-loader-box"></div>');
+			$logo.wrap(
+				'<div class="dcis-loader-box"></div>'
+			);
 
-		$logo.after(
-			'<div class="dcis-loader-spinner"></div>'
+			$logo.after(
+				'<div class="dcis-loader-spinner"></div>'
+			);
+		}
+
+		$loader[0].style.setProperty(
+			'display',
+			'flex',
+			'important'
 		);
 	}
 
-	$loader[0].style.setProperty(
-		'display',
-		'flex',
-		'important'
-	);
-}
 
 	function dcashopHideLoader() {
 
@@ -51,11 +57,48 @@ jQuery(function($) {
 			);
 	}
 
+
+	/* Bottom spinner */
+
+	function dcashopShowBottomSpinner() {
+
+		var $products = $('.products');
+
+		if (!$products.length) {
+			return;
+		}
+
+		if (!$products.next('.dcis-bottom-spinner').length) {
+
+			$products.after(
+				'<div class="dcis-bottom-spinner">' +
+					'<div class="dcis-bottom-spinner-circle"></div>' +
+				'</div>'
+			);
+		}
+
+		$products
+			.next('.dcis-bottom-spinner')
+			.show();
+	}
+
+
+	function dcashopHideBottomSpinner() {
+
+		$('.dcis-bottom-spinner').hide();
+	}
+
+
+	/* Disable infinite scroll */
+
 	function dcashopDisableInfiniteScroll() {
 
 		var $products = $('.products');
 
-		var dc = $products.data('infiniteScroll');
+		var dc =
+			$products.data(
+				'infiniteScroll'
+			);
 
 		if (dc) {
 
@@ -66,6 +109,7 @@ jQuery(function($) {
 		}
 
 		dcashopHideLoader();
+		dcashopHideBottomSpinner();
 
 		$('.woocommerce-pagination')
 			.attr(
@@ -73,6 +117,9 @@ jQuery(function($) {
 				'display: block !important;'
 			);
 	}
+
+
+	/* Pagination click */
 
 	document.addEventListener(
 		'click',
@@ -107,6 +154,9 @@ jQuery(function($) {
 		},
 		true
 	);
+
+
+	/* Check finished state */
 
 	if (dcashopInfiniteFinished) {
 
@@ -143,6 +193,9 @@ jQuery(function($) {
 		return;
 	}
 
+
+	/* Find Flatsome infinite scroll */
+
 	var dcashopWait =
 		setInterval(
 			function() {
@@ -159,6 +212,9 @@ jQuery(function($) {
 				}
 
 				clearInterval(dcashopWait);
+
+
+				/* Limit pages */
 
 				var originalPath =
 					dc.options.path;
@@ -202,6 +258,9 @@ jQuery(function($) {
 					}
 				);
 
+
+				/* AJAX request */
+
 				$products.on(
 					'request.infiniteScroll',
 					function() {
@@ -220,6 +279,7 @@ jQuery(function($) {
 								) {
 
 									dcashopShowLoader();
+									dcashopShowBottomSpinner();
 
 								}
 
@@ -229,6 +289,9 @@ jQuery(function($) {
 
 					}
 				);
+
+
+				/* AJAX load */
 
 				$products.on(
 					'load.infiniteScroll',
@@ -241,13 +304,30 @@ jQuery(function($) {
 						}
 
 						dcashopHideLoader();
+						dcashopHideBottomSpinner();
 
 					}
 				);
 
+
+				/* Products appended */
+
 				$products.on(
 					'append.infiniteScroll',
 					function() {
+
+						/* Fix product grid reflow */
+
+						requestAnimationFrame(
+							function() {
+
+								$(window).trigger(
+									'resize'
+								);
+
+							}
+						);
+
 
 						var instance =
 							$products.data(
@@ -258,12 +338,18 @@ jQuery(function($) {
 							return;
 						}
 
+
+						/* Continue until page 5 */
+
 						if (
 							instance.pageIndex <
 							dcashopMaxPage
 						) {
 							return;
 						}
+
+
+						/* Prevent duplicate execution */
 
 						if (
 							$products.data(
@@ -273,24 +359,35 @@ jQuery(function($) {
 							return;
 						}
 
+
 						$products.data(
 							'dcashop-stopped',
 							true
 						);
 
+
 						dcashopInfiniteFinished =
 							true;
+
 
 						sessionStorage.setItem(
 							dcashopStorageKey,
 							'1'
 						);
 
+
+						/* Stop infinite scroll */
+
 						try {
 							instance.destroy();
 						} catch (e) {}
 
+
 						dcashopHideLoader();
+						dcashopHideBottomSpinner();
+
+
+						/* Update URL */
 
 						var url =
 							new URL(
@@ -310,6 +407,9 @@ jQuery(function($) {
 							url.searchParams.toString()
 						);
 
+
+						/* Load page 5 pagination */
+
 						var paginationUrl =
 							new URL(
 								window.location.href
@@ -319,6 +419,7 @@ jQuery(function($) {
 							'paged',
 							dcashopMaxPage
 						);
+
 
 						$.get(
 							paginationUrl.toString(),
@@ -335,6 +436,7 @@ jQuery(function($) {
 											'.woocommerce-pagination'
 										)
 										.first();
+
 
 								if (
 									$newPagination.length
